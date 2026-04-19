@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redstone v2 Copy Rollout — Client Comment Response | KAMG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Redstone Design Tokens (inline from colors_and_type.css)
+   ============================================================ */
+:root {
+  --rs-red:             rgb(178, 30, 36);
+  --rs-red-hover:       rgb(152, 22, 28);
+  --rs-ink:             rgb(38, 38, 38);
+  --rs-charcoal:        rgb(58, 58, 58);
+  --rs-slate:           rgb(111, 111, 111);
+  --rs-fog:             rgb(140, 140, 140);
+  --rs-line:            rgb(226, 226, 226);
+  --rs-off-white:       rgb(249, 249, 249);
+  --rs-cloud:           rgb(242, 242, 242);
+  --rs-white:           rgb(255, 255, 255);
+  --rs-highlight-green: rgb(46, 132, 84);
+  --rs-shadow-soft:     0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
+  --rs-shadow-lifted:   0 2px 4px rgba(0,0,0,0.06), 0 12px 32px rgba(0,0,0,0.10);
+
+  --rs-font: 'Host Grotesk', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --rs-font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+}
+
+/* ============================================================
+   Reset + Base
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-family: var(--rs-font);
+  font-size: 16px;
+  color: var(--rs-ink);
+  background: var(--rs-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body { margin: 0; }
+
+/* ============================================================
+   Layout
+   ============================================================ */
+.page-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* ============================================================
+   Cover Section
+   ============================================================ */
+.cover {
+  background: var(--rs-white);
+  padding: 0;
+  page-break-after: always;
+}
+
+.cover-red-rule {
+  height: 5px;
+  background: var(--rs-red);
+  width: 100%;
+}
+
+.cover-inner {
+  padding: 80px 48px 72px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.cover-kicker {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rs-red);
+  margin: 0 0 32px;
+}
+
+.cover-title {
+  font-size: 52px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--rs-ink);
+  margin: 0 0 20px;
+  max-width: 720px;
+}
+
+.cover-sub {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--rs-slate);
+  letter-spacing: -0.01em;
+  margin: 0 0 64px;
+}
+
+.cover-rule {
+  width: 100%;
+  height: 1px;
+  background: var(--rs-line);
+  margin: 0 0 48px;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--rs-line);
+}
+
+.stat-cell {
+  padding: 28px 32px;
+  border-right: 1px solid var(--rs-line);
+}
+.stat-cell:last-child { border-right: none; }
+
+.stat-num {
+  font-size: 40px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  color: var(--rs-red);
+  line-height: 1;
+  margin: 0 0 6px;
+}
+
+.stat-label {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--rs-slate);
+  letter-spacing: 0;
+  margin: 0;
+}
+
+/* ============================================================
+   Section scaffolding
+   ============================================================ */
+.section {
+  padding: 72px 0;
+  border-top: 1px solid var(--rs-line);
+}
+
+.section-header {
+  max-width: 1100px;
+  margin: 0 auto 48px;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 0 24px;
+  align-items: start;
+}
+
+.section-num {
+  font-family: var(--rs-font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--rs-fog);
+  padding-top: 5px;
+  letter-spacing: 0.06em;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  color: var(--rs-ink);
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+
+.section-sub {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--rs-slate);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.section-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* ============================================================
+   Executive Summary
+   ============================================================ */
+.exec-summary {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 0 24px;
+}
+
+.exec-summary p {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--rs-charcoal);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  margin: 0 0 20px;
+}
+.exec-summary p:last-child { margin: 0; }
+
+/* ============================================================
+   Directive Scorecard Table
+   ============================================================ */
+.scorecard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.scorecard-table thead th {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rs-fog);
+  padding: 0 16px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--rs-line);
+}
+
+.scorecard-table thead th:first-child { padding-left: 0; }
+
+.scorecard-table tbody tr {
+  border-bottom: 1px solid var(--rs-line);
+}
+.scorecard-table tbody tr:last-child { border-bottom: none; }
+
+.scorecard-table tbody tr:hover { background: var(--rs-off-white); }
+
+.scorecard-table td {
+  padding: 14px 16px;
+  vertical-align: top;
+  color: var(--rs-charcoal);
+  line-height: 1.5;
+}
+
+.scorecard-table td:first-child {
+  padding-left: 0;
+  font-family: var(--rs-font-mono);
+  font-size: 12px;
+  color: var(--rs-fog);
+  width: 40px;
+  white-space: nowrap;
+}
+
+.scorecard-table td:last-child {
+  white-space: nowrap;
+}
+
+.pass-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgb(232, 246, 239);
+  color: var(--rs-highlight-green);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 3px 10px;
+  border-radius: 2px;
+}
+
+.pass-badge::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--rs-highlight-green);
+  border-radius: 50%;
+}
+
+/* ============================================================
+   Before/After Highlights
+   ============================================================ */
+.highlight-item {
+  margin-bottom: 64px;
+}
+.highlight-item:last-child { margin-bottom: 0; }
+
+.highlight-meta {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 0 24px;
+  margin-bottom: 20px;
+}
+
+.highlight-num {
+  font-family: var(--rs-font-mono);
+  font-size: 11px;
+  color: var(--rs-fog);
+  padding-top: 3px;
+  letter-spacing: 0.06em;
+}
+
+.highlight-directive {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rs-red);
+  margin: 0 0 4px;
+}
+
+.highlight-label {
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--rs-ink);
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.ba-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--rs-line);
+}
+
+.ba-panel {
+  background: var(--rs-white);
+  overflow: hidden;
+}
+
+.ba-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--rs-cloud);
+  border-bottom: 1px solid var(--rs-line);
+}
+
+.ba-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ba-dot--before { background: var(--rs-fog); }
+.ba-dot--after  { background: var(--rs-red); }
+
+.ba-label-text {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rs-slate);
+}
+
+.ba-panel img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* ============================================================
+   Page Index Table
+   ============================================================ */
+.page-index-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.page-index-table thead th {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rs-fog);
+  padding: 0 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--rs-line);
+}
+.page-index-table thead th:first-child { padding-left: 0; }
+
+.page-index-table tbody tr {
+  border-bottom: 1px solid var(--rs-line);
+}
+.page-index-table tbody tr:last-child { border-bottom: none; }
+.page-index-table tbody tr:hover { background: var(--rs-off-white); }
+
+.page-index-table td {
+  padding: 11px 14px;
+  vertical-align: middle;
+  color: var(--rs-charcoal);
+  line-height: 1.4;
+}
+.page-index-table td:first-child {
+  padding-left: 0;
+  font-family: var(--rs-font-mono);
+  font-size: 11px;
+  color: var(--rs-fog);
+  width: 28px;
+}
+
+.page-index-table td .slug {
+  font-family: var(--rs-font-mono);
+  font-size: 12px;
+  color: var(--rs-charcoal);
+}
+
+.page-index-table a {
+  color: var(--rs-red);
+  text-decoration: none;
+}
+.page-index-table a:hover { text-decoration: underline; }
+
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 2px;
+  margin-right: 4px;
+}
+.tag--mx  { background: rgb(235, 244, 255); color: rgb(37, 99, 235); }
+.tag--cnc { background: rgb(255, 247, 230); color: rgb(180, 100, 0); }
+.tag--sm  { background: rgb(243, 232, 255); color: rgb(126, 34, 206); }
+
+/* ============================================================
+   Flagged Items
+   ============================================================ */
+.flag-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.flag-item {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 0 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rs-line);
+  align-items: start;
+}
+.flag-item:last-child { border-bottom: none; }
+
+.flag-icon {
+  font-size: 16px;
+  padding-top: 1px;
+}
+
+.flag-text {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--rs-charcoal);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.flag-text strong {
+  font-weight: 500;
+  color: var(--rs-ink);
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.report-footer {
+  background: var(--rs-ink);
+  padding: 40px 48px;
+  margin-top: 80px;
+}
+
+.report-footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.report-footer p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.report-footer-brand {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Print styles
+   ============================================================ */
+@media print {
+  .cover { page-break-after: always; }
+  .section { page-break-inside: avoid; }
+  .highlight-item { page-break-inside: avoid; }
+  .ba-grid { page-break-inside: avoid; }
+  .stats-row { break-inside: avoid; }
+
+  .report-footer { background: var(--rs-ink) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cover-red-rule { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .pass-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ba-label { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     COVER
+     ============================================================ -->
+<div class="cover">
+  <div class="cover-red-rule"></div>
+  <div class="cover-inner">
+    <p class="cover-kicker">Redstone Manufacturing &mdash; Internal Report</p>
+    <h1 class="cover-title">v2 Copy Rollout &mdash;<br>Client Comment Response</h1>
+    <p class="cover-sub">Response to Eric &mdash; April 19, 2026 &nbsp;&middot;&nbsp; Prepared by KAMG</p>
+
+    <div class="cover-rule"></div>
+
+    <div class="stats-row">
+      <div class="stat-cell">
+        <div class="stat-num">21</div>
+        <div class="stat-label">Landing pages updated</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">18</div>
+        <div class="stat-label">Directives addressed</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">~600</div>
+        <div class="stat-label">Individual copy edits</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">21/21</div>
+        <div class="stat-label">Pages audit-verified</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     01 EXECUTIVE SUMMARY
+     ============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <div>
+      <h2 class="section-title">Executive Summary</h2>
+      <p class="section-sub">What changed, why, and what to review</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="exec-summary">
+      <div></div>
+      <div>
+        <p>This report documents the v2 copy rollout across all 21 Redstone landing pages, completed in response to 18 copy-comment directives from Eric. Every change is text-only &mdash; no structural deletions, no layout modifications, no hero images touched. All edits were audit-verified against each directive with a pass/fail scan across the full page set.</p>
+        <p>The primary focus of this round was precision and accuracy. Key changes include: removing the 48-hour quote claim that could not be guaranteed operationally; standardizing on &ldquo;ISO 9001 certified&rdquo; instead of the shorthand &ldquo;ISO-certified&rdquo;; replacing &ldquo;program&rdquo; with &ldquo;parts&rdquo; in all CTAs per Eric&rsquo;s framing preference; adding Monterrey factory specificity and USMCA/6-8 week lead-time language across the 9 Mexico-targeted pages; and removing AWS-welder language from the 7 sheet-metal pages where it appeared.</p>
+        <p>The tolerance update on CNC pages (&plusmn;0.0005&rdquo; &rarr; &plusmn;0.001&rdquo;) and the removal of 5-axis machining references across all 21 pages were applied uniformly. Ohio references have been removed with no Seattle or alternative city substituted, as directed. The Qualifications section was explicitly preserved on all pages despite being flagged for review &mdash; Eric confirmed keep.</p>
+        <p>A small set of claims are flagged in Section 6 for Eric&rsquo;s sign-off before this copy goes live: the &ldquo;2,000+ programs&rdquo; stat, the IATF 16949 references remaining in trust blocks, and the client logo set currently on pages but not appearing on Redstone&rsquo;s own website.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     02 DIRECTIVE SCORECARD
+     ============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <div>
+      <h2 class="section-title">Directive Scorecard</h2>
+      <p class="section-sub">18 directives &mdash; all 21 pages verified</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <table class="scorecard-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Directive</th>
+          <th>Scope</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01</td>
+          <td>Feasibility popup reworded &mdash; tells customer if we can produce their part</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>02</td>
+          <td>IATF 16949 removed from H1</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>03</td>
+          <td>Standardized <code>&lt;title&gt;</code> tags &le;60 characters</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>04</td>
+          <td>AWS-certified welder language removed</td>
+          <td>Sheet-metal only</td>
+          <td><span class="pass-badge">7 / 7</span></td>
+        </tr>
+        <tr>
+          <td>05</td>
+          <td>Monterrey mentioned on Mexico pages</td>
+          <td>Mexico pages</td>
+          <td><span class="pass-badge">9 / 9</span></td>
+        </tr>
+        <tr>
+          <td>06</td>
+          <td>Third-party / independent QC language removed</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>07</td>
+          <td>USMCA + 6&ndash;8 weeks vs. China framing added</td>
+          <td>Mexico pages</td>
+          <td><span class="pass-badge">9 / 9</span></td>
+        </tr>
+        <tr>
+          <td>08</td>
+          <td>Singular Monterrey factory framing</td>
+          <td>Mexico pages</td>
+          <td><span class="pass-badge">9 / 9</span></td>
+        </tr>
+        <tr>
+          <td>09</td>
+          <td>&ldquo;ISO-certified&rdquo; &rarr; &ldquo;ISO 9001 certified&rdquo;</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>Qualifications section preserved (NOT deleted)</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>&ldquo;program&rdquo; &rarr; &ldquo;parts&rdquo; in CTAs</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td>48-hour quote claims removed</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td>Ohio removed &mdash; no city substituted</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td>&ldquo;program manager&rdquo; &rarr; &ldquo;account manager&rdquo;</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>Nearshoring CTA framing applied</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td>Hero sub leads with Mexico + US-based account manager</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td>&plusmn;0.0005&rdquo; &rarr; &plusmn;0.001&rdquo; on CNC pages</td>
+          <td>CNC pages</td>
+          <td><span class="pass-badge">10 / 10</span></td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td>5-axis machining references removed everywhere</td>
+          <td>All pages</td>
+          <td><span class="pass-badge">21 / 21</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============================================================
+     03 BEFORE / AFTER HIGHLIGHTS
+     ============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <div>
+      <h2 class="section-title">Before / After Highlights</h2>
+      <p class="section-sub">Six representative changes &mdash; section-cropped screenshots, 1440px desktop viewport</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <!-- Highlight 1 -->
+    <div class="highlight-item">
+      <div class="highlight-meta">
+        <span class="highlight-num">H1</span>
+        <div>
+          <p class="highlight-directive">Directives 02, 05, 07, 08, 16</p>
+          <p class="highlight-label">Hero H1 + sub &mdash; <em>aluminum-die-casting-companies-in-mexico</em></p>
+        </div>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--before"></span><span class="ba-label-text">Before &mdash; Production</span></div>
+          <img src="assets/2026-04-19-v2/before-1.png" alt="Before: hero H1 and sub on aluminum die casting Mexico page">
+        </div>
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--after"></span><span class="ba-label-text">After &mdash; v2</span></div>
+          <img src="assets/2026-04-19-v2/after-1.png" alt="After: hero H1 and sub with ISO 9001, Monterrey, USMCA">
+        </div>
+      </div>
+    </div>
+
+    <!-- Highlight 2 -->
+    <div class="highlight-item">
+      <div class="highlight-meta">
+        <span class="highlight-num">H2</span>
+        <div>
+          <p class="highlight-directive">Directives 13, 14</p>
+          <p class="highlight-label">Trust block &mdash; <em>aluminum-die-casting</em></p>
+        </div>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--before"></span><span class="ba-label-text">Before &mdash; Production</span></div>
+          <img src="assets/2026-04-19-v2/before-2.png" alt="Before: trust block showing Ohio and Program teams">
+        </div>
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--after"></span><span class="ba-label-text">After &mdash; v2</span></div>
+          <img src="assets/2026-04-19-v2/after-2.png" alt="After: trust block with US-based engineering HQ and Account teams">
+        </div>
+      </div>
+    </div>
+
+    <!-- Highlight 3 -->
+    <div class="highlight-item">
+      <div class="highlight-meta">
+        <span class="highlight-num">H3</span>
+        <div>
+          <p class="highlight-directive">Directive 01</p>
+          <p class="highlight-label">Feasibility popup &mdash; <em>die-casting-companies-in-mexico</em></p>
+        </div>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--before"></span><span class="ba-label-text">Before &mdash; Production</span></div>
+          <img src="assets/2026-04-19-v2/before-3.png" alt="Before: feasibility popup">
+        </div>
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--after"></span><span class="ba-label-text">After &mdash; v2</span></div>
+          <img src="assets/2026-04-19-v2/after-3.png" alt="After: feasibility popup reworded">
+        </div>
+      </div>
+    </div>
+
+    <!-- Highlight 4 -->
+    <div class="highlight-item">
+      <div class="highlight-meta">
+        <span class="highlight-num">H4</span>
+        <div>
+          <p class="highlight-directive">Directives 11, 15</p>
+          <p class="highlight-label">Final CTA &mdash; <em>die-casting-companies-in-mexico</em></p>
+        </div>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--before"></span><span class="ba-label-text">Before &mdash; Production</span></div>
+          <img src="assets/2026-04-19-v2/before-4.png" alt="Before: final CTA with program language">
+        </div>
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--after"></span><span class="ba-label-text">After &mdash; v2</span></div>
+          <img src="assets/2026-04-19-v2/after-4.png" alt="After: final CTA with parts and nearshoring frame">
+        </div>
+      </div>
+    </div>
+
+    <!-- Highlight 5 -->
+    <div class="highlight-item">
+      <div class="highlight-meta">
+        <span class="highlight-num">H5</span>
+        <div>
+          <p class="highlight-directive">Directives 09, 14</p>
+          <p class="highlight-label">Footer tagline &mdash; <em>cnc-machining-mexico</em></p>
+        </div>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--before"></span><span class="ba-label-text">Before &mdash; Production</span></div>
+          <img src="assets/2026-04-19-v2/before-5.png" alt="Before: footer tagline">
+        </div>
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--after"></span><span class="ba-label-text">After &mdash; v2</span></div>
+          <img src="assets/2026-04-19-v2/after-5.png" alt="After: ISO 9001 certified factory in Monterrey, US-based account manager">
+        </div>
+      </div>
+    </div>
+
+    <!-- Highlight 6 -->
+    <div class="highlight-item">
+      <div class="highlight-meta">
+        <span class="highlight-num">H6</span>
+        <div>
+          <p class="highlight-directive">Directive 04</p>
+          <p class="highlight-label">Hero eyebrow AWS removal &mdash; <em>sheet-metal-fabrication-services</em></p>
+        </div>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--before"></span><span class="ba-label-text">Before &mdash; Production</span></div>
+          <img src="assets/2026-04-19-v2/before-6.png" alt="Before: AWS-Certified Welders in hero eyebrow">
+        </div>
+        <div class="ba-panel">
+          <div class="ba-label"><span class="ba-dot ba-dot--after"></span><span class="ba-label-text">After &mdash; v2</span></div>
+          <img src="assets/2026-04-19-v2/after-6.png" alt="After: Certified Welders in hero eyebrow">
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /section-body -->
+</div>
+
+<!-- ============================================================
+     04 PAGE INDEX
+     ============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <div>
+      <h2 class="section-title">Page Index</h2>
+      <p class="section-sub">All 21 pages &mdash; live production + v2 preview (localhost only)</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <table class="page-index-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Slug</th>
+          <th>Type</th>
+          <th>Live URL</th>
+          <th>v2 Preview</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01</td>
+          <td><span class="slug">aluminum-die-casting</span></td>
+          <td></td>
+          <td><a href="https://theredstonemanufacturing.com/aluminum-die-casting/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/aluminum-die-casting/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>02</td>
+          <td><span class="slug">aluminum-die-casting-companies-in-mexico</span></td>
+          <td><span class="tag tag--mx">MX</span></td>
+          <td><a href="https://theredstonemanufacturing.com/aluminum-die-casting-companies-in-mexico/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/aluminum-die-casting-companies-in-mexico/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>03</td>
+          <td><span class="slug">aluminum-sheet-metal-fabrication</span></td>
+          <td><span class="tag tag--sm">SM</span></td>
+          <td><a href="https://theredstonemanufacturing.com/aluminum-sheet-metal-fabrication/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/aluminum-sheet-metal-fabrication/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>04</td>
+          <td><span class="slug">aluminum-sheet-metal-fabrication-mexico</span></td>
+          <td><span class="tag tag--mx">MX</span><span class="tag tag--sm">SM</span></td>
+          <td><a href="https://theredstonemanufacturing.com/aluminum-sheet-metal-fabrication-mexico/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/aluminum-sheet-metal-fabrication-mexico/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>05</td>
+          <td><span class="slug">cnc-machining-company</span></td>
+          <td><span class="tag tag--cnc">CNC</span></td>
+          <td><a href="https://theredstonemanufacturing.com/cnc-machining-company/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/cnc-machining-company/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>06</td>
+          <td><span class="slug">cnc-machining-mexico</span></td>
+          <td><span class="tag tag--cnc">CNC</span><span class="tag tag--mx">MX</span></td>
+          <td><a href="https://theredstonemanufacturing.com/cnc-machining-mexico/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/cnc-machining-mexico/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>07</td>
+          <td><span class="slug">cnc-manufacturing</span></td>
+          <td><span class="tag tag--cnc">CNC</span></td>
+          <td><a href="https://theredstonemanufacturing.com/cnc-manufacturing/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/cnc-manufacturing/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>08</td>
+          <td><span class="slug">cnc-manufacturing-mexico</span></td>
+          <td><span class="tag tag--cnc">CNC</span><span class="tag tag--mx">MX</span></td>
+          <td><a href="https://theredstonemanufacturing.com/cnc-manufacturing-mexico/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/cnc-manufacturing-mexico/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>09</td>
+          <td><span class="slug">cnc-mexico</span></td>
+          <td><span class="tag tag--cnc">CNC</span><span class="tag tag--mx">MX</span></td>
+          <td><a href="https://theredstonemanufacturing.com/cnc-mexico/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/cnc-mexico/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><span class="slug">custom-cnc-machining</span></td>
+          <td><span class="tag tag--cnc">CNC</span></td>
+          <td><a href="https://theredstonemanufacturing.com/custom-cnc-machining/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/custom-cnc-machining/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td><span class="slug">custom-machining-services</span></td>
+          <td><span class="tag tag--cnc">CNC</span></td>
+          <td><a href="https://theredstonemanufacturing.com/custom-machining-services/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/custom-machining-services/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td><span class="slug">custom-sheet-metal-fabrication</span></td>
+          <td><span class="tag tag--sm">SM</span></td>
+          <td><a href="https://theredstonemanufacturing.com/custom-sheet-metal-fabrication/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/custom-sheet-metal-fabrication/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><span class="slug">die-casting-companies-in-mexico</span></td>
+          <td><span class="tag tag--mx">MX</span></td>
+          <td><a href="https://theredstonemanufacturing.com/die-casting-companies-in-mexico/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/die-casting-companies-in-mexico/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td><span class="slug">industrial-sheet-metal-fabrication</span></td>
+          <td><span class="tag tag--sm">SM</span></td>
+          <td><a href="https://theredstonemanufacturing.com/industrial-sheet-metal-fabrication/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/industrial-sheet-metal-fabrication/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td><span class="slug">precision-machining-india</span></td>
+          <td></td>
+          <td><a href="https://theredstonemanufacturing.com/precision-machining-india/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/precision-machining-india/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td><span class="slug">precision-machining-mexico</span></td>
+          <td><span class="tag tag--mx">MX</span></td>
+          <td><a href="https://theredstonemanufacturing.com/precision-machining-mexico/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/precision-machining-mexico/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td><span class="slug">precision-machining-services</span></td>
+          <td><span class="tag tag--cnc">CNC</span></td>
+          <td><a href="https://theredstonemanufacturing.com/precision-machining-services/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/precision-machining-services/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td><span class="slug">sheet-metal-fabrication-companies-in-mexico</span></td>
+          <td><span class="tag tag--mx">MX</span><span class="tag tag--sm">SM</span></td>
+          <td><a href="https://theredstonemanufacturing.com/sheet-metal-fabrication-companies-in-mexico/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/sheet-metal-fabrication-companies-in-mexico/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td><span class="slug">sheet-metal-fabrication-company</span></td>
+          <td><span class="tag tag--sm">SM</span></td>
+          <td><a href="https://theredstonemanufacturing.com/sheet-metal-fabrication-company/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/sheet-metal-fabrication-company/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td><span class="slug">sheet-metal-fabrication-services</span></td>
+          <td><span class="tag tag--sm">SM</span></td>
+          <td><a href="https://theredstonemanufacturing.com/sheet-metal-fabrication-services/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/sheet-metal-fabrication-services/" target="_blank">Preview</a></td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td><span class="slug">index (homepage LP)</span></td>
+          <td></td>
+          <td><a href="https://theredstonemanufacturing.com/" target="_blank">Live</a></td>
+          <td><a href="http://localhost:8765/" target="_blank">Preview</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:var(--rs-fog);margin-top:16px;line-height:1.6;">
+      v2 preview URLs resolve only on the local dev machine running the build server. Share the live URLs with Eric for external review.
+    </p>
+  </div>
+</div>
+
+<!-- ============================================================
+     05 FLAGGED ITEMS FOR ERIC
+     ============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <div>
+      <h2 class="section-title">Items Flagged for Eric&rsquo;s Sign-off</h2>
+      <p class="section-sub">Claims and assets we have not modified &mdash; Eric needs to confirm or correct</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <ul class="flag-list">
+      <li class="flag-item">
+        <span class="flag-icon">&#9651;</span>
+        <p class="flag-text">
+          <strong>&ldquo;2,000+ programs shipped since 2018&rdquo;</strong> &mdash;
+          This stat appears in multiple pages. We have not changed it. Please confirm the number and the year are still accurate and whether &ldquo;programs&rdquo; should now read &ldquo;parts&rdquo; or &ldquo;projects&rdquo; in this specific context.
+        </p>
+      </li>
+      <li class="flag-item">
+        <span class="flag-icon">&#9651;</span>
+        <p class="flag-text">
+          <strong>IATF 16949 certification</strong> &mdash;
+          Per directive 02, IATF was removed from H1 on all 21 pages. However, IATF 16949 references remain in the trust/qualifications blocks and the footer across all pages, as those sections were explicitly preserved (directive 10). If IATF 16949 should be removed entirely site-wide, please confirm and we will do a full sweep.
+        </p>
+      </li>
+      <li class="flag-item">
+        <span class="flag-icon">&#9651;</span>
+        <p class="flag-text">
+          <strong>Client logos: Amazon, MIT, Halliburton, GameStop, Libman, Honda</strong> &mdash;
+          These logos appear in the social-proof section on our landing pages but are not shown on Redstone&rsquo;s main website. Please confirm these are approved for use on the LP set, or provide the correct logo set to display.
+        </p>
+      </li>
+      <li class="flag-item">
+        <span class="flag-icon">&#9651;</span>
+        <p class="flag-text">
+          <strong>&ldquo;USMCA-compliant freight&rdquo;</strong> &mdash;
+          This language was added across the 9 Mexico pages per directive 07. We believe this is accurate but it is a compliance-adjacent claim. Eric should confirm the freight arrangements genuinely qualify before these pages go live.
+        </p>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<div class="report-footer">
+  <div class="report-footer-inner">
+    <p>Redstone Manufacturing &mdash; Internal Use &mdash; April 19, 2026</p>
+    <span class="report-footer-brand">KAMG</span>
+  </div>
+</div>
+
+</body>
+</html>
