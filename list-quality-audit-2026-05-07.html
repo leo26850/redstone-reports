@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redstone List v2 — Quality Audit + Eric Decisions Required (May 7, 2026)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #FFFFFF; color: #000000; font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+
+.band-dark { background: #000000; color: #FFFFFF; padding: 50px 60px; }
+.band-white { background: #FFFFFF; color: #000000; padding: 50px 60px; border-bottom: 1px solid #E0E0E0; }
+.band-surface { background: #F5F5F5; color: #000000; padding: 50px 60px; border-bottom: 1px solid #E0E0E0; }
+.inner { max-width: 1200px; margin: 0 auto; }
+
+.report-header { background: #000000; color: #FFFFFF; padding: 50px 60px; border-bottom: 4px solid #B21E24; }
+.header-meta { font-size: 0.72em; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #999; margin-bottom: 16px; }
+.header-meta span { margin-right: 20px; }
+.report-title { font-size: 2.2em; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 8px; }
+.report-subtitle { font-size: 1em; color: #BBB; max-width: 760px; }
+
+.summary-card { background: #111; border: 1px solid #333; padding: 20px 24px; margin-top: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.summary-card .sc-item { font-size: 0.85em; }
+.summary-card .sc-label { font-size: 0.7em; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #666; margin-bottom: 4px; }
+.summary-card .sc-value { color: #FFF; font-weight: 600; font-size: 1.1em; }
+.summary-card .sc-value-red { color: #fb7185; }
+.summary-card .sc-value-amber { color: #fbbf24; }
+.summary-card .sc-value-green { color: #4ade80; }
+
+.section-label { font-size: 0.7em; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #B21E24; margin-bottom: 6px; }
+.section-title { font-size: 1.5em; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; }
+.section-intro { font-size: 0.92em; color: #666; max-width: 900px; margin-bottom: 28px; line-height: 1.6; }
+.band-dark .section-intro { color: #AAA; }
+
+.callout { border-left: 4px solid #B21E24; padding: 16px 20px; margin-bottom: 28px; font-size: 0.9em; line-height: 1.6; }
+.band-dark .callout { background: #111; color: #CCC; }
+.band-white .callout { background: #F5F5F5; color: #333; }
+.band-surface .callout { background: #FFF; color: #333; }
+.callout-amber { border-left-color: #ea580c; }
+.callout-green { border-left-color: #16a34a; }
+.callout-blue { border-left-color: #2563eb; }
+.callout strong { color: #000; }
+.band-dark .callout strong { color: #FFF; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.88em; margin-bottom: 28px; }
+thead th { text-align: left; font-size: 0.72em; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 16px; border-bottom: 2px solid #B21E24; white-space: nowrap; }
+.band-dark thead th { color: #999; background: #000; }
+.band-white thead th, .band-surface thead th { color: #666; background: #F5F5F5; }
+tbody tr { border-bottom: 1px solid #E0E0E0; }
+.band-dark tbody tr { border-bottom: 1px solid #1E1E1E; }
+tbody td { padding: 12px 16px; vertical-align: top; line-height: 1.55; }
+.band-dark tbody td { color: #CCC; }
+
+.badge { display: inline-block; font-size: 0.7em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border: 1px solid; }
+.badge-green { color: #16a34a; border-color: #16a34a; }
+.badge-blue { color: #2563eb; border-color: #2563eb; }
+.badge-amber { color: #ea580c; border-color: #ea580c; }
+.badge-red { color: #B21E24; border-color: #B21E24; }
+.badge-gray { color: #666; border-color: #666; }
+.badge-core { color: #B21E24; border-color: #B21E24; background: rgba(178,30,36,0.06); }
+
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #333; border: 1px solid #333; margin-bottom: 32px; }
+.stat-cell { background: #111; padding: 24px 20px; }
+.stat-label { font-size: 0.7em; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #666; margin-bottom: 6px; }
+.stat-value { font-size: 1.8em; font-weight: 800; color: #FFF; letter-spacing: -0.02em; line-height: 1; }
+.stat-value-red { color: #fb7185; }
+.stat-value-green { color: #4ade80; }
+.stat-value-blue { color: #60a5fa; }
+.stat-value-amber { color: #fbbf24; }
+.stat-sub { font-size: 0.75em; color: #888; margin-top: 4px; }
+
+.hl { color: #2563eb; font-weight: 600; }
+.hl-red { color: #B21E24; font-weight: 600; }
+.hl-green { color: #16a34a; font-weight: 600; }
+.hl-amber { color: #ea580c; font-weight: 600; }
+
+.tab-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+.tab-card { background: #FFF; border: 1px solid #E0E0E0; padding: 18px 20px; }
+.band-dark .tab-card { background: #111; border-color: #333; }
+.tab-card .tc-name { font-size: 0.95em; font-weight: 700; margin-bottom: 4px; }
+.tab-card .tc-rows { font-size: 1.6em; font-weight: 800; letter-spacing: -0.02em; color: #B21E24; line-height: 1; margin-bottom: 6px; }
+.tab-card .tc-status { font-size: 0.75em; color: #666; }
+.band-dark .tab-card .tc-status { color: #999; }
+
+ul.checklist { list-style: none; padding: 0; margin: 0 0 24px 0; }
+ul.checklist li { padding: 10px 16px 10px 36px; position: relative; border-bottom: 1px solid #E0E0E0; font-size: 0.92em; line-height: 1.55; }
+.band-dark ul.checklist li { border-color: #1E1E1E; color: #CCC; }
+ul.checklist li::before { content: "☐"; position: absolute; left: 12px; top: 8px; font-size: 1.1em; color: #B21E24; }
+ul.checklist li strong { color: #000; }
+.band-dark ul.checklist li strong { color: #FFF; }
+
+.foot { padding: 32px 60px; background: #000; color: #888; font-size: 0.82em; text-align: center; }
+.foot a { color: #60a5fa; text-decoration: none; }
+
+@media (max-width: 900px) {
+  .summary-card, .stat-grid, .tab-row { grid-template-columns: repeat(2, 1fr); }
+  .band-dark, .band-white, .band-surface, .report-header, .foot { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<header class="report-header">
+  <div class="inner">
+    <div class="header-meta">
+      <span>REDSTONE MANUFACTURING</span>
+      <span>APOLLO COLD EMAIL LIST</span>
+      <span>MAY 7, 2026</span>
+    </div>
+    <h1 class="report-title">List v2 quality audit + Eric decisions required</h1>
+    <p class="report-subtitle">Audit of "Redstone List v2" workbook (13 tabs, ~7,500 rows). Hard-gate compliance, soft-quality findings, and the specific calls Eric needs to make before send. Companions Kas's <a style="color:#fb7185;text-decoration:underline" href="cold-email-strategy-2026-04-29.html">Cold Email Strategy doc</a>.</p>
+
+    <div class="summary-card">
+      <div class="sc-item"><div class="sc-label">Workbook</div><div class="sc-value">Redstone List v2 (13 tabs)</div></div>
+      <div class="sc-item"><div class="sc-label">Hard gates (Mexico / banned ind / email)</div><div class="sc-value sc-value-green">All pass</div></div>
+      <div class="sc-item"><div class="sc-label">Decisions awaiting Eric</div><div class="sc-value sc-value-amber">22 items</div></div>
+      <div class="sc-item"><div class="sc-label">Status</div><div class="sc-value sc-value-amber">Send-ready after Eric review</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ SECTION 1 · TL;DR ============ -->
+<section class="band-dark">
+  <div class="inner">
+    <div class="section-label">SECTION 1 · TL;DR</div>
+    <h2 class="section-title">Where we are</h2>
+    <p class="section-intro">Three usable lists shipped. Hard gates pass everywhere — zero Mexico, zero banned industries (1 stray "wholesale"), 99.5%+ deliverable email, 100% US/Canada. Soft-quality cleanup needed at ~50–80 rows total before Lemlist send. Plus we still owe Eric a decision on 17 copy variations from the v4 review and 5 list-strategy questions.</p>
+
+    <div class="stat-grid">
+      <div class="stat-cell"><div class="stat-label">Core Services v2</div><div class="stat-value">1,165</div><div class="stat-sub">SMB cold email · 1 contact/co · 100% labelled "Y"</div></div>
+      <div class="stat-cell"><div class="stat-label">Large Companies</div><div class="stat-value stat-value-blue">1,868</div><div class="stat-sub">ABM master · 166 multi-contact accounts · unlabelled</div></div>
+      <div class="stat-cell"><div class="stat-label">draft LC</div><div class="stat-value stat-value-amber">1,550</div><div class="stat-sub">Filtered ABM · 129 multi-contact · 100% "Y"</div></div>
+      <div class="stat-cell"><div class="stat-label">Large Companies v2</div><div class="stat-value stat-value-green">162</div><div class="stat-sub">Cold-email skim · 1 contact/co · 100% "Y"</div></div>
+    </div>
+
+    <div class="callout callout-amber">
+      <strong>Strategic call needed:</strong> Large Companies v2 collapsed the 1,868-row ABM list to 162 contacts (1 per company) — a 91% volume drop driven by dedupe, not relevance. This is the right shape for a cold blast but throws away the multi-threading thesis (Bobcat 82, SIG SAUER 68, Oshkosh Defense 65). <strong>Don't archive draft LC</strong> — run it as ABM in parallel.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2 · TAB-BY-TAB ============ -->
+<section class="band-white">
+  <div class="inner">
+    <div class="section-label">SECTION 2 · TAB-BY-TAB QUALITY</div>
+    <h2 class="section-title">Hard-gate compliance per tab</h2>
+    <p class="section-intro">Eight visible tabs. All eight pass Kas's hard gates: zero Mexico, near-zero banned industries, zero generic / free-mail addresses. Variation lives in soft quality — title noise, sub-10-employee shops, AI/SaaS-keyword leaks under mfg labels.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Tab</th>
+          <th style="text-align:right">Rows</th>
+          <th style="text-align:right">US</th>
+          <th style="text-align:right">CA</th>
+          <th style="text-align:right">MX</th>
+          <th style="text-align:right">Banned ind.</th>
+          <th style="text-align:right">SaaS/AI leak</th>
+          <th style="text-align:right">Buyer-titled</th>
+          <th style="text-align:right">Mgr+</th>
+          <th>Verdict</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Core Services v2</strong></td>
+          <td style="text-align:right">1,165</td>
+          <td style="text-align:right">995</td>
+          <td style="text-align:right">170</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">52</td>
+          <td style="text-align:right">84%</td>
+          <td style="text-align:right">99%</td>
+          <td><span class="badge badge-green">Send-ready</span></td>
+        </tr>
+        <tr>
+          <td><strong>Large Companies</strong></td>
+          <td style="text-align:right">1,868</td>
+          <td style="text-align:right">1,717</td>
+          <td style="text-align:right">151</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">61</td>
+          <td style="text-align:right">87%</td>
+          <td style="text-align:right">98%</td>
+          <td><span class="badge badge-blue">ABM master</span></td>
+        </tr>
+        <tr>
+          <td><strong>draft LC</strong></td>
+          <td style="text-align:right">1,550</td>
+          <td style="text-align:right">1,431</td>
+          <td style="text-align:right">119</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">~50</td>
+          <td style="text-align:right">88%</td>
+          <td style="text-align:right">99%</td>
+          <td><span class="badge badge-blue">ABM filtered</span></td>
+        </tr>
+        <tr>
+          <td><strong>Large Companies v2</strong></td>
+          <td style="text-align:right">162</td>
+          <td style="text-align:right">148</td>
+          <td style="text-align:right">14</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">~5</td>
+          <td style="text-align:right">85%</td>
+          <td style="text-align:right">99%</td>
+          <td><span class="badge badge-green">Cold-email skim</span></td>
+        </tr>
+        <tr>
+          <td>Hardware</td>
+          <td style="text-align:right">591</td>
+          <td style="text-align:right">511</td>
+          <td style="text-align:right">80</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">14</td>
+          <td style="text-align:right">85%</td>
+          <td style="text-align:right">98%</td>
+          <td><span class="badge badge-green">Send-ready</span></td>
+        </tr>
+        <tr>
+          <td>Robotics</td>
+          <td style="text-align:right">449</td>
+          <td style="text-align:right">373</td>
+          <td style="text-align:right">76</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">38</td>
+          <td style="text-align:right">82%</td>
+          <td style="text-align:right">99%</td>
+          <td><span class="badge badge-amber">Sweep AI/SaaS first</span></td>
+        </tr>
+        <tr>
+          <td>IoT Device</td>
+          <td style="text-align:right">184</td>
+          <td style="text-align:right">149</td>
+          <td style="text-align:right">35</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">26</td>
+          <td style="text-align:right">80%</td>
+          <td style="text-align:right">98%</td>
+          <td><span class="badge badge-amber">Sweep AI/SaaS first</span></td>
+        </tr>
+        <tr>
+          <td>Off-Road</td>
+          <td style="text-align:right">105</td>
+          <td style="text-align:right">94</td>
+          <td style="text-align:right">11</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">94%</td>
+          <td style="text-align:right">100%</td>
+          <td><span class="badge badge-green">Send as-is</span></td>
+        </tr>
+        <tr>
+          <td>Firearms</td>
+          <td style="text-align:right">57</td>
+          <td style="text-align:right">56</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">3</td>
+          <td style="text-align:right">91%</td>
+          <td style="text-align:right">96%</td>
+          <td><span class="badge badge-amber">Eric eyes — competitive overlap</span></td>
+        </tr>
+        <tr>
+          <td>Consumer Electronics</td>
+          <td style="text-align:right">2</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">0%</td>
+          <td style="text-align:right">100%</td>
+          <td><span class="badge badge-gray">Skip — too thin</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ SECTION 3 · CORE SERVICES V2 DETAIL ============ -->
+<section class="band-surface">
+  <div class="inner">
+    <div class="section-label">SECTION 3 · CORE SERVICES v2 (1,165 ROWS)</div>
+    <h2 class="section-title">SMB cold email — what to cut</h2>
+    <p class="section-intro">v2 of Core Services is materially better than v1: 156 rows already culled, every row labelled <span class="badge badge-core">Y</span> with a Reason code, 0 banned industries beyond a single wholesale stray. Send-ready after a precision pass on ~42 rows.</p>
+
+    <div class="stat-grid">
+      <div class="stat-cell"><div class="stat-label">Hard cuts identified</div><div class="stat-value stat-value-red">26</div><div class="stat-sub">Distributor sales engineers + pure-software</div></div>
+      <div class="stat-cell"><div class="stat-label">Borderline cuts</div><div class="stat-value stat-value-amber">16</div><div class="stat-sub">OEM Sales Engineers + sub-15-emp AI shops</div></div>
+      <div class="stat-cell"><div class="stat-label">Final clean count</div><div class="stat-value stat-value-green">~1,123</div><div class="stat-sub">If all 42 cuts approved (3.6% trim)</div></div>
+      <div class="stat-cell"><div class="stat-label">Multi-contact accounts</div><div class="stat-value">3</div><div class="stat-sub">Deliberate dedupe vs v1's 98</div></div>
+    </div>
+
+    <h3 style="font-size:1.1em;font-weight:700;margin-bottom:12px">Cut · 16 distributor / reseller "Sales Engineer" rows</h3>
+    <p style="font-size:0.88em;color:#555;margin-bottom:16px">Companies that resell other manufacturers' products. Contact's job is selling to end-customers, not procuring parts.</p>
+    <table>
+      <thead><tr><th>Company</th><th>Title</th><th>Email</th></tr></thead>
+      <tbody>
+        <tr><td>Productivity Solutions Company</td><td>Sr. Sales Engineer</td><td>ericc@pscco.com</td></tr>
+        <tr><td>BRECOflex CO. L.L.C</td><td>Senior Sales Engineer</td><td>bosborne@brecoflex.com</td></tr>
+        <tr><td>CIMTEC Automation</td><td>Senior Sales Engineer</td><td>ksenator@cimtec.com</td></tr>
+        <tr><td>SKEANS Pneumatic &amp; Automation</td><td>Senior Technical Sales Engineer</td><td>andyb@skeans.com</td></tr>
+        <tr><td>Ralph W. Earl Company</td><td>Sr. Sales Engineer / Robot Specialist</td><td>jhorn@rwearl.com</td></tr>
+        <tr><td>Integrated Manufacturing &amp; Supply</td><td>Senior Sales Engineer — Tooling</td><td>scott.amick@intmfg.com</td></tr>
+        <tr><td>Toyota Lift Northwest</td><td>Director of Sales Operations</td><td>drouseau@toyotaliftnorthwest.com</td></tr>
+        <tr><td>Thierica Automation &amp; Equipment</td><td>Sr. Sales Engineer</td><td>darin.hibbs@thiequip.com</td></tr>
+        <tr><td>Precision Cobotics</td><td>Senior Automation Sales Engineer</td><td>mpaioletti@precisioncobotics.com</td></tr>
+        <tr><td>Luscombe Engineering of Southern CA</td><td>Sr Sales Engineer</td><td>bmcnaughton@lecc.com</td></tr>
+        <tr><td>CTC Associates</td><td>Senior Technical Sales Engineer</td><td>mhenaghan@ctcassociates.com</td></tr>
+        <tr><td>Rockingham Electrical Supply</td><td>Operations Manager, Outside Sales</td><td>hclark@rockingham.com</td></tr>
+        <tr><td>Reliability Power</td><td>Senior Sales Engineer</td><td>jackson.rice@reliabilityups.com</td></tr>
+        <tr><td>Lesman Instrument Company</td><td>Senior Sales Engineer</td><td>rodney.weisheimer@lesman.com</td></tr>
+        <tr><td>IC Intracom</td><td>Director of National Sales / Sales Operations</td><td>lfree@icintracom.com</td></tr>
+        <tr><td>Heat Technology Products</td><td>Sales and Operations <span class="badge badge-red" style="margin-left:8px">wholesale</span></td><td>dan@heattech.com</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:1.1em;font-weight:700;margin-bottom:12px">Cut · 10 pure-software / SaaS / AI personas</h3>
+    <p style="font-size:0.88em;color:#555;margin-bottom:16px">Software-engineer personas at AI-only or SaaS shops with no parts demand.</p>
+    <table>
+      <thead><tr><th>Company</th><th>Title</th><th>Email</th></tr></thead>
+      <tbody>
+        <tr><td>IRIS Factory Automation</td><td>Senior Controls Engineer (pure factory automation SW)</td><td>jason.solfisburg@iriscs.com</td></tr>
+        <tr><td>L3 KEO</td><td>Sr Software Engineer</td><td>george.bishop@l3t.com</td></tr>
+        <tr><td>OrionStar Robotics</td><td>Senior Software Engineer</td><td>yangyating3@orionstar.com</td></tr>
+        <tr><td>Möbius Industries</td><td>Lead AI &amp; Software Engineer</td><td>karl@mobiusindustry.com</td></tr>
+        <tr><td>FreeWave</td><td>Lead DevSecOps Engineer</td><td>jleroux@freewave.com</td></tr>
+        <tr><td>PIMIC.ai</td><td>Lead Software QA Engineer</td><td>lance@pimic.ai</td></tr>
+        <tr><td>TurbineOne</td><td>Senior Software Engineer</td><td>joshua@turbineone.com</td></tr>
+        <tr><td>ShadowTech Labs</td><td>Lead Java Software Engineer</td><td>sclarke@shadowtechlabs.com</td></tr>
+        <tr><td>Orca Water Solutions</td><td>Senior Software Engineer</td><td>sstevenson@orcawater.life</td></tr>
+        <tr><td>Shelfmark</td><td>Lead Forward Deployed Engineer</td><td>eric.baumann@shelfmark.com</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-blue">
+      <strong>Borderline (16 rows) — Eric's call:</strong> 8 OEM Sales Engineers (Con-Vey, Columbia/Okura, Automatic Handling Intl, HÄGGLUNDS, ABI, Transducers Direct, Jo-Kell, URC) + 8 sub-15-employee AI shops (Zordi, Invent Automation, Glüxkind, InnoTech, Optimotive, Agile Power, ByDesign VSM, Brave Control Solutions). Ask Eric which way he wants to lean.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4 · LARGE COMPANIES V2 DETAIL ============ -->
+<section class="band-white">
+  <div class="inner">
+    <div class="section-label">SECTION 4 · LARGE COMPANIES v2 (162 ROWS)</div>
+    <h2 class="section-title">Cold-email skim — wrong personas + miscategorizations</h2>
+    <p class="section-intro">v2 collapsed 1,868 → 162 by deduping every multi-contact account to a single contact. Same 162 unique companies as draft LC — just one rep each. Two precision-cleanup passes needed before send.</p>
+
+    <h3 style="font-size:1.1em;font-weight:700;margin-bottom:12px">Cut · 5 obvious miscategorizations</h3>
+    <table>
+      <thead><tr><th>Company</th><th>Why cut</th></tr></thead>
+      <tbody>
+        <tr><td>Washington Township Board of Education</td><td>School district, not a manufacturer</td></tr>
+        <tr><td>"Robotics" (literal)</td><td>Data-quality issue — no real company name</td></tr>
+        <tr><td>Three UK</td><td>UK telecom carrier, geo-suspect even if Country=US</td></tr>
+        <tr><td>Smarte Carte</td><td>Luggage cart rental, weak parts-buying signal</td></tr>
+        <tr><td>RCAL Products</td><td>27 employees — too small for a "Large Companies" tab</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:1.1em;font-weight:700;margin-bottom:12px">Re-pick contact at 13 accounts (wrong persona kept on dedupe)</h3>
+    <p style="font-size:0.88em;color:#555;margin-bottom:16px">The dedupe logic kept HR / IT / Marketing / Software contacts when the original 1,868-row tab had stronger engineering or procurement contacts at the same company. Pull replacements from <strong>draft LC</strong> tab.</p>
+    <table>
+      <thead><tr><th>Company</th><th>Currently picked (problem)</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>Teledyne Marine</td><td>Recruitment &amp; HR Ops Manager</td><td>Re-pick engineer/ops</td></tr>
+        <tr><td>AutomationDirect</td><td>Sr. Marketing Technology SW Engineer</td><td>Re-pick</td></tr>
+        <tr><td>Mazzella</td><td>People Operations Manager</td><td>Re-pick</td></tr>
+        <tr><td>MTD Products</td><td>Senior Network Security Engineer</td><td>Re-pick</td></tr>
+        <tr><td>ECHO</td><td>Senior Software Engineer</td><td>Re-pick</td></tr>
+        <tr><td>Tom Harris Cellular</td><td>Manager, IT Operations</td><td>Verify or drop</td></tr>
+        <tr><td>Drum Workshop</td><td>Sr. Manager, Creative Operations</td><td>Re-pick</td></tr>
+        <tr><td>LG Electronics NA</td><td>Senior Embedded Software Engineer</td><td>Re-pick</td></tr>
+        <tr><td>B&amp;C Speakers</td><td>Sales &amp; Operations Director</td><td>Borderline</td></tr>
+        <tr><td>IC Intracom</td><td>Director of National Sales / Sales Ops</td><td>Cut (also flagged in Core Services v2)</td></tr>
+        <tr><td>Lift-All Company</td><td>Director of Sales Operations</td><td>Re-pick</td></tr>
+        <tr><td>TTA-ISO</td><td>General Manager Sales Operations</td><td>Re-pick</td></tr>
+        <tr><td>KONI</td><td>Global Sales &amp; Engineering Executive Director</td><td>Borderline</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-green">
+      <strong>Highlight — strong picks already in v2:</strong> Knape &amp; Vogt (Director, Procurement), Chervon NA (VP Supply Chain), Yamaha Motor USA (Supply Chain Manager), The Genie Company (VP Supply Chain), Sumitomo Drive (Supply Chain Manager), Hinkley (Supply Chain Manager), Krause Automation (Operational Buyer / VMI Manager). Seven textbook RFQ buyers — the personas the rest of the list should aspire to.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 5 · WHAT WE NEED FROM ERIC ============ -->
+<section class="band-dark">
+  <div class="inner">
+    <div class="section-label">SECTION 5 · WHAT WE NEED FROM ERIC</div>
+    <h2 class="section-title">22 decisions blocking send</h2>
+    <p class="section-intro">Five list-strategy decisions, 17 cold-email copy decisions carried over from the v4 review. None are blocking each other — Eric can answer in any order. Default-if-no-decision shown for each.</p>
+
+    <h3 style="font-size:1.1em;font-weight:700;margin-bottom:12px;color:#FFF">5.1 · List strategy (5 decisions)</h3>
+    <table>
+      <thead><tr><th>#</th><th>Decision</th><th>Tag</th><th>Default if no answer</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>L1</strong></td>
+          <td>Approve the 26 hard cuts in Core Services v2 (16 distributor sales engineers + 10 pure-software personas) — list above</td>
+          <td><span class="badge badge-red">PICK</span></td>
+          <td>Apply all 26 cuts</td>
+        </tr>
+        <tr>
+          <td><strong>L2</strong></td>
+          <td>Approve the 16 borderline cuts in Core Services v2 (8 OEM Sales Engineers + 8 sub-15-emp AI shops)</td>
+          <td><span class="badge badge-amber">PICK</span></td>
+          <td>Keep them in (lean toward volume)</td>
+        </tr>
+        <tr>
+          <td><strong>L3</strong></td>
+          <td>Approve the 5 obvious miscategorizations to drop from Large Companies v2 (Washington Township BoE, "Robotics", Three UK, Smarte Carte, RCAL Products)</td>
+          <td><span class="badge badge-red">PICK</span></td>
+          <td>Drop all 5</td>
+        </tr>
+        <tr>
+          <td><strong>L4</strong></td>
+          <td>Re-pick contact at 13 wrong-persona accounts in Large Companies v2 — pull replacements from draft LC tab. Or instruct: "use draft LC for ABM, leave v2 alone, accept the wrong personas"</td>
+          <td><span class="badge badge-amber">PICK</span></td>
+          <td>Re-pick all 13 from draft LC</td>
+        </tr>
+        <tr>
+          <td><strong>L5</strong></td>
+          <td>Confirm parallel run: Large Companies v2 (162) for cold-email blast + draft LC (1,550) for ABM multi-thread. Or pick one</td>
+          <td><span class="badge badge-amber">PICK</span></td>
+          <td>Run both in parallel</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:1.1em;font-weight:700;margin:32px 0 12px;color:#FFF">5.2 · Cold-email copy (17 decisions, carried from v4 review 2026-05-04)</h3>
+    <p style="font-size:0.88em;color:#AAA;margin-bottom:16px">Eric's review Doc: <a href="https://docs.google.com/document/d/1Xv8XQuH8N3w-w1nsLHql9yfy9E2YeD-qKGk2l5XQwqQ/edit" style="color:#60a5fa;text-decoration:none">Redstone Campaign Copy</a>. PICK = real strategy tradeoff. REC = clear improvement, applied unless he objects. BLOCKED = needs Eric/Alec input.</p>
+
+    <table>
+      <thead><tr><th>#</th><th>Element</th><th>Tag</th><th>Tradeoff</th><th>Default</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>CTA pattern in A/B/C E1 (binary call+PN vs single PN)</td><td><span class="badge badge-red">PICK</span></td><td>Reviewer: single beats binary +15–30% reply. Kas: binary as drafted</td><td>Binary (current)</td></tr>
+        <tr><td>2</td><td>Track B subject line</td><td><span class="badge badge-red">PICK · Kas conflict</span></td><td>Kas verbatim "quick question {{first_name}}" vs Reviewer specific</td><td>Kas spec</td></tr>
+        <tr><td>3</td><td>Track E subject line</td><td><span class="badge badge-red">PICK · Kas conflict</span></td><td>Kas verbatim "heads up before summer" vs Reviewer Section 301-named</td><td>Kas spec</td></tr>
+        <tr><td>4</td><td>Track A E1 opener</td><td><span class="badge badge-red">PICK</span></td><td>"Saw {{company}} runs..." vs "{{company}}'s volume looks like..."</td><td>Current</td></tr>
+        <tr><td>5</td><td>Track D E1 opener</td><td><span class="badge badge-red">PICK</span></td><td>"Saw on the attendee list" vs "on the list this year?"</td><td>Current</td></tr>
+        <tr><td>6</td><td>Track E E1 closing CTA (no-meeting integrity)</td><td><span class="badge badge-red">PICK</span></td><td>Slides into ask vs preserves seed</td><td>Current</td></tr>
+        <tr><td>7</td><td>Track F subject line</td><td><span class="badge badge-red">PICK</span></td><td>Asks if they rep vs flips to actual ask</td><td>Current</td></tr>
+        <tr><td>8</td><td>Track A E1 case-study line — force "[X]% lower landed cost"</td><td><span class="badge badge-blue">REC</span></td><td>Required-phrase compliance</td><td>Apply</td></tr>
+        <tr><td>9</td><td>Cut meta-narration across A/B/E ("Quick reason for reaching out")</td><td><span class="badge badge-blue">REC</span></td><td>Pure tightening</td><td>Apply</td></tr>
+        <tr><td>10</td><td>Track A E3 cut "Either answer works"</td><td><span class="badge badge-blue">REC</span></td><td>3-sentence breakup tighter</td><td>Apply</td></tr>
+        <tr><td>11</td><td>Track B body — name "Section 301" once</td><td><span class="badge badge-blue">REC</span></td><td>Anchors why-now</td><td>Apply</td></tr>
+        <tr><td>12</td><td>Track C E2 + D E1 + E E1 — force "lower landed cost"</td><td><span class="badge badge-blue">REC</span></td><td>Required-phrase compliance</td><td>Apply</td></tr>
+        <tr><td>13</td><td>Track D E1 — add comparison-quote fallback line</td><td><span class="badge badge-blue">REC</span></td><td>Required phrase missing in Track D</td><td>Apply</td></tr>
+        <tr><td>14</td><td>Track D — "30-min sit-downs" → "20-min booth chats"</td><td><span class="badge badge-blue">REC</span></td><td>Realistic for booth context</td><td>Apply</td></tr>
+        <tr><td>15</td><td>Track F body — rewrite to rep-voice + add comparison-quote line</td><td><span class="badge badge-blue">REC</span></td><td>Currently reads buyer-pitch</td><td>Apply</td></tr>
+        <tr><td>16</td><td>Halliburton segmented by ICP slice</td><td><span class="badge badge-amber">BLOCKED</span></td><td>Need 2 more case studies from Eric/Alec</td><td>Single Halliburton anchor stays</td></tr>
+        <tr><td>17</td><td>Track F commission % named</td><td><span class="badge badge-amber">BLOCKED</span></td><td>Need standard commission structure</td><td>Placeholder stays</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-blue">
+      <strong>Format Eric responds in:</strong> single message of the form <code style="background:#000;color:#fb7185;padding:2px 6px">L1 yes, L2 no, L3 yes, L4 yes, L5 both, copy 1B 2A 3A 4A 5A 6A 7A, all REC, skip blocked</code>. Anything not specified takes the default.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 6 · APPENDIX ============ -->
+<section class="band-surface">
+  <div class="inner">
+    <div class="section-label">SECTION 6 · APPENDIX</div>
+    <h2 class="section-title">Locked constraints (do not violate)</h2>
+
+    <table>
+      <thead><tr><th>Category</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>Geo</td><td>Mexico EXCLUDED as buyer market. US + Canada + select adjacent geos only.</td></tr>
+        <tr><td>Industries excluded</td><td>Software, SaaS, consulting, trading, finance, marketing-services, real estate, staffing, legal, healthcare-services, education, aerospace (per Apr 28), medical (per Apr 28).</td></tr>
+        <tr><td>Sender persona</td><td>Alec (BD), speaking as "we" for Redstone. <strong>Eric is NEVER named in body copy</strong> — cold prospects don't know him.</td></tr>
+        <tr><td>Banned words</td><td>project · marketplace · network · save money · savings · guarantee · free · em dashes · "Hope this finds you well" · competitor names · factories · "made in USA" alone · Seattle · Ohio · 5-axis on machining LPs · AWS welders · 3rd party QC · 48-hour quotes</td></tr>
+        <tr><td>Required somewhere per track</td><td>"lower landed cost" · "comparison quote"</td></tr>
+        <tr><td>Use phrasing</td><td>lower landed cost · parts · facility in Mexico (single) · ISO 9001 · in-house inspection · U.S. account manager</td></tr>
+        <tr><td>Sequence</td><td>3 touches D0 / D3 / D8 for Tracks A–E. Track F hand-personalized.</td></tr>
+        <tr><td>Eric communication</td><td>Tables, not paragraphs. Lead with recommendation, follow with data. Mon + Thu cadence. Channel = #redstone-marketing (no DMs).</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:1.1em;font-weight:700;margin:32px 0 12px">Source artifacts</h3>
+    <ul class="checklist">
+      <li><strong>Workbook:</strong> "Redstone List v2" — <a href="https://docs.google.com/spreadsheets/d/1m9CgEouzJNpj1a8J6-L2O3sM5Q6cujxT5fhl1x11ZyI/edit">Google Sheets</a> (owner leo@kasandz.com)</li>
+      <li><strong>Cold email v4 Doc:</strong> <a href="https://docs.google.com/document/d/1Xv8XQuH8N3w-w1nsLHql9yfy9E2YeD-qKGk2l5XQwqQ/edit">Redstone Campaign Copy</a> — 6 H1 headings (Track A–F), 17 inline decisions</li>
+      <li><strong>Strategy doc:</strong> <a href="cold-email-strategy-2026-04-29.html">Cold Email Strategy and Plan of Attack — Apr 29, 2026</a> (Kas)</li>
+      <li><strong>Eric call report:</strong> <a href="eric-call-report-2026-04-30.html">Apr 30 marketing review</a></li>
+      <li><strong>Apr 28 ICP decisions (this audit applies):</strong> firearms, robotics, industrial machinery, off-road, dental, fitness, defense, electrical mfg, industrial automation</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="inner">
+    <p>Redstone Manufacturing · List v2 quality audit · May 7, 2026 · KAMG</p>
+    <p style="margin-top:8px">Generated by Leo. Companion to <a href="cold-email-strategy-2026-04-29.html">Kas's Cold Email Strategy doc (Apr 29)</a>.</p>
+  </div>
+</footer>
+
+</body>
+</html>
