@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Redstone Site Change Report — July 8, 2026</title>
+<style>
+  :root {
+    --paper: #FAFAF7;
+    --surface: #FFFFFF;
+    --ink: #1E1F20;
+    --slate: #5C6065;
+    --faint: #8B8F94;
+    --line: #E4E3DF;
+    --red: #B21E24;
+    --red-soft: #F6E9E9;
+    --good: #1E6E42;
+    --good-soft: #E7F1EA;
+    --warn: #8A5A12;
+    --warn-soft: #F5EDDD;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --display: "Avenir Next", "Avenir", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #17181A;
+      --surface: #1E2023;
+      --ink: #E9E8E4;
+      --slate: #A6A9AD;
+      --faint: #7C8085;
+      --line: #33363A;
+      --red: #E14C52;
+      --red-soft: #3A2224;
+      --good: #5CB981;
+      --good-soft: #1E2F25;
+      --warn: #D6A452;
+      --warn-soft: #332B1B;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #17181A; --surface: #1E2023; --ink: #E9E8E4; --slate: #A6A9AD; --faint: #7C8085;
+    --line: #33363A; --red: #E14C52; --red-soft: #3A2224; --good: #5CB981; --good-soft: #1E2F25;
+    --warn: #D6A452; --warn-soft: #332B1B;
+  }
+  :root[data-theme="light"] {
+    --paper: #FAFAF7; --surface: #FFFFFF; --ink: #1E1F20; --slate: #5C6065; --faint: #8B8F94;
+    --line: #E4E3DF; --red: #B21E24; --red-soft: #F6E9E9; --good: #1E6E42; --good-soft: #E7F1EA;
+    --warn: #8A5A12; --warn-soft: #F5EDDD;
+  }
+
+  html { background: var(--paper); }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--sans); font-size: 15.5px; line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  /* ---- header ---- */
+  .masthead { border-bottom: 2px solid var(--ink); padding-bottom: 26px; margin-bottom: 12px; }
+  .mast-kicker {
+    font: 600 11.5px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--red); display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+  }
+  .mast-kicker::before { content: ''; width: 26px; height: 2px; background: var(--red); }
+  h1 {
+    font-family: var(--display); font-size: clamp(28px, 4.6vw, 40px); font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.08; margin: 0 0 14px; text-wrap: balance;
+  }
+  .mast-meta { display: flex; flex-wrap: wrap; gap: 6px 28px; color: var(--slate); font-size: 13.5px; }
+  .mast-meta strong { color: var(--ink); font-weight: 600; }
+  .mast-meta a { color: var(--red); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--red) 40%, transparent); }
+  .mast-meta a:hover, .mast-meta a:focus-visible { border-bottom-color: var(--red); }
+
+  /* ---- summary strip ---- */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 26px 0 8px; }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat { background: var(--surface); padding: 16px 18px 14px; }
+  .stat b { display: block; font: 700 26px/1.1 var(--display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .stat span { display: block; margin-top: 5px; font-size: 12px; line-height: 1.45; color: var(--slate); }
+
+  /* ---- sections ---- */
+  section { margin-top: 52px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 18px; }
+  .pr-tag {
+    font: 600 12px/1 var(--mono); letter-spacing: 0.06em; color: var(--red);
+    background: var(--red-soft); padding: 5px 9px; white-space: nowrap;
+  }
+  h2 { font-family: var(--display); font-size: 21px; font-weight: 700; letter-spacing: -0.015em; margin: 0; text-wrap: balance; }
+  .sec-sub { width: 100%; margin: 2px 0 0; color: var(--slate); font-size: 13.5px; }
+  h3 { font-family: var(--display); font-size: 15.5px; font-weight: 700; margin: 26px 0 8px; }
+  p { margin: 0 0 14px; max-width: 72ch; }
+  section > p:last-child { margin-bottom: 0; }
+
+  /* ---- change list ---- */
+  .changes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .changes li { display: grid; grid-template-columns: 92px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .changes li:last-child { border-bottom: 0; }
+  .changes .id { font: 600 12.5px/1.7 var(--mono); color: var(--faint); white-space: nowrap; }
+  .changes .what { min-width: 0; }
+  .changes .what b { font-weight: 650; }
+  .changes .what small { display: block; color: var(--slate); font-size: 13.5px; line-height: 1.55; margin-top: 2px; }
+  @media (max-width: 560px) { .changes li { grid-template-columns: 1fr; gap: 2px; } }
+
+  /* ---- tables ---- */
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; background: var(--surface); }
+  th { font: 600 11px/1.3 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { white-space: nowrap; font-family: var(--mono); font-size: 12.5px; color: var(--slate); }
+
+  .pill { display: inline-block; font: 600 11px/1 var(--mono); letter-spacing: 0.05em; padding: 4px 8px; white-space: nowrap; }
+  .pill.live { color: var(--good); background: var(--good-soft); }
+  .pill.wait { color: var(--warn); background: var(--warn-soft); }
+
+  /* ---- note block ---- */
+  .note { border-left: 3px solid var(--warn); background: var(--warn-soft); padding: 12px 16px; font-size: 13.5px; color: var(--ink); margin: 18px 0 0; }
+  .note b { color: var(--warn); font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 5px; }
+
+  footer { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--faint); font-size: 12.5px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  code { font-family: var(--mono); font-size: 0.9em; background: var(--surface); border: 1px solid var(--line); padding: 1px 5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="mast-kicker">Redstone Manufacturing · Website Change Report</div>
+    <h1>July 8 end-of-day report: review batch shipped, Eric's decisions actioned, backlog swept, imagery audited</h1>
+    <div class="mast-meta">
+      <div>Date <strong>Tuesday, July 8, 2026</strong></div>
+      <div>Site <a href="https://redstone-web-eight.vercel.app">redstone-web-eight.vercel.app</a></div>
+      <div>Status <strong>All four PRs merged, deployed, and verified live</strong></div>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>4</b><span>pull requests merged and verified live (#136–#139)</span></div>
+    <div class="stat"><b>8</b><span>same-day review items delivered (RED-410…417)</span></div>
+    <div class="stat"><b>3 + 1</b><span>service pages removed, plus Plastic Injection Molding unlinked</span></div>
+    <div class="stat"><b>125</b><span>Plane items resolved and verified (97 Done, 28 cancelled; 41 remain open with stated reasons)</span></div>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <span class="pr-tag">PR #136</span>
+      <h2>Morning review batch — the eight items added today</h2>
+      <p class="sec-sub">Every item Eric raised this morning, fixed and deployed the same day.</p>
+    </div>
+    <ul class="changes">
+      <li><span class="id">RED-410</span><div class="what"><b>Home page reverted to the original layout.</b>
+        <small>The original section order is back (margin fixes kept — they live on the shared components). The "Precision Machining for Regulated &amp; Performance Driven Industries" accordion gained fuller copy, three bullet points per industry, and links to the built industry pages. The footer's FAQ anchor works again.</small></div></li>
+      <li><span class="id">RED-411</span><div class="what"><b>Locations menu rebuilt around the three countries.</b>
+        <small>The USMCA promo card is gone; India joined as a full column. The red Mexico / China / India headings now link to their country pages, and every built capability page is listed underneath (Mexico 5, China 7, India 5). India was also added to the footer.</small></div></li>
+      <li><span class="id">RED-412</span><div class="what"><b>Die casting hero shows a real part.</b>
+        <small>The blue-background product-listing photo was replaced with the die-cast water pump — the strongest of the three real part photos. The hero image is now excluded from that page's gallery so no part appears twice.</small></div></li>
+      <li><span class="id">RED-413</span><div class="what"><b>Materials box removed from every service hero.</b>
+        <small>The alloy-list chip ("Aluminum alloys (A380, ADC12)…") no longer renders in any hero. Materials still appear in the Technical Capabilities spec sheet, where they belong.</small></div></li>
+      <li><span class="id">RED-414</span><div class="what"><b>Service page refinements.</b>
+        <small>The Technical Capabilities data sheet is now sticky on desktop, staying pinned while the capability list scrolls. Carousel arrows dropped to vertical center. The sheet-metal related card swapped its office phone photo for the clean tread-plate shot.</small></div></li>
+      <li><span class="id">RED-415</span><div class="what"><b>Gridlines removed site-wide.</b>
+        <small>Footer blueprint grid and column rules, the ruled vertical lines on home sections, the hero grid overlay, the quote-form paper texture, and the article/resources/blog grid textures are all gone. Structural divider lines were kept.</small></div></li>
+      <li><span class="id">RED-416</span><div class="what"><b>India page made reachable.</b>
+        <small>The /geo/india page already existed with sanitised Neuron copy — the gap was that nothing linked to it. It's now in the Locations menu and footer. Real India facility photos have been requested from Mostafa on Slack.</small></div></li>
+      <li><span class="id">RED-417</span><div class="what"><b>Automotive industry page fixes.</b>
+        <small>Cost-card bullets now follow the copy instead of pinning to the card bottom, with expanded landed-cost copy (USMCA and Section 232/301 language). "The metal we move" thumbnails carry captions, and every slide has real copy instead of a placeholder line.</small></div></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="pr-tag">PR #137 · #138</span>
+      <h2>Live-review follow-ups</h2>
+      <p class="sec-sub">Raised by Leo while reviewing the deployed batch; shipped within the hour.</p>
+    </div>
+    <ul class="changes">
+      <li><span class="id">Home</span><div class="what"><b>Cost Effective section removed.</b>
+        <small>The revert had brought back its stat blocks (99% / 98%), which conflict with the no-unverifiable-stats rule. Cut per Leo's call.</small></div></li>
+      <li><span class="id">Home</span><div class="what"><b>Resources section on the updated format.</b>
+        <small>The home page now uses the redesigned resources block (horizontal topic tabs, updated card style) instead of the pre-redesign version that returned with the revert.</small></div></li>
+      <li><span class="id">Die&nbsp;casting</span><div class="what"><b>Carousel arrows moved outside the content column.</b>
+        <small>On wide screens (≥1360px) the arrows sit in the page margin and can never cover card copy; on narrower screens they stay centered in-column.</small></div></li>
+      <li><span class="id">India</span><div class="what"><b>Low-res hero replaced.</b>
+        <small>The hero was an 800×268 composite stretched full-bleed. Replaced with the 1600px casting-dies foundry photo until Mostafa's real India imagery arrives.</small></div></li>
+      <li><span class="id">Sand&nbsp;casting</span><div class="what"><b>Same low-res composite retired from the sand-casting hero.</b>
+        <small>The family has no hero-grade photo of its own (its part shots are low-res phone photos, and all dedicated sand-casting footage is molten-metal, which is banned from heroes). A 1600px dark parts still stands in.</small></div></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="pr-tag">PR #139</span>
+      <h2>Eric's outstanding June-24 decisions, actioned</h2>
+      <p class="sec-sub">Open questions from the June review, resolved after Leo confirmed each call.</p>
+    </div>
+    <ul class="changes">
+      <li><span class="id">RED-182</span><div class="what"><b>Plastic Injection Molding unlinked, pages kept.</b>
+        <small>"Not a service they want to promote." Removed from the header Services menu, footer, Locations column, /services grid, and cross-page capability sections. The pages stay live and reachable by direct URL — nothing 404s.</small></div></li>
+      <li><span class="id">RED-272<br>275 · 290</span><div class="what"><b>Three pages removed: Wire Forming, Metal Enclosures, Lost-Wax Casting.</b>
+        <small>Eric questioned whether the first two were genuine services; lost-wax duplicated the investment-casting hub (it's the same process). All links cleaned, and each old URL 301-redirects to its hub.</small></div></li>
+      <li><span class="id">RED-203<br>193 · 207 · 213</span><div class="what"><b>CNC hero video retired across the whole family.</b>
+        <small>The clip was vintage manual machinery — not CNC — which is why no crop ever looked right. All ~14 CNC pages (hub, sub-processes, US facility, Mexico/China/India) now open on a modern turn-mill still, consistent with the real-part hero direction.</small></div></li>
+      <li><span class="id">RED-180</span><div class="what"><b>MIM stand-in clip replaced.</b>
+        <small>The placeholder was glowing furnace footage. MIM pages now open on a real MIM parts photo. A true MIM production clip remains on the asset wishlist.</small></div></li>
+      <li><span class="id">RED-177<br>184 · 197 · 294</span><div class="what"><b>Remaining video and structure complaints closed as resolved.</b>
+        <small>Hero heights were standardised by the July 7 hero rebuild, sand/investment casting pages render stills (molten clips are banned), and the sand-casting page moved onto the standard template. Each item carries a comment saying exactly what resolved it.</small></div></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="pr-tag">Plane</span>
+      <h2>Backlog sweep — module cleaned from 158 open items to ~30 real ones</h2>
+    </div>
+    <p>Every open item in the Redstone Website module was reviewed against the live site. Items whose work verifiably shipped were closed with a comment linking the live page; obsolete planning scaffolding from the May build plan was cancelled; everything left open now has a stated reason and owner.</p>
+    <div class="tablewrap">
+      <table>
+        <tr><th>Disposition</th><th>Count</th><th>What</th></tr>
+        <tr><td>Done</td><td>75</td><td>Verified fixes from the June review, plus per-page content items whose Neuron-optimised copy shipped in the June/July batches — each closed with its live URL.</td></tr>
+        <tr><td>Cancelled</td><td>28</td><td>May build-plan scaffolding (wireframe gates, template phases, wave batches) superseded by how the site was actually built. The rebuild epic itself was closed as delivered.</td></tr>
+        <tr><td>Open — launch</td><td>~20</td><td>Real pre-go-live work: QA passes, GTM/GA4/HubSpot tracking, redirects, Search Console, domain cutover. The production domain still runs the old WordPress site.</td></tr>
+        <tr><td>Open — blocked</td><td>~10</td><td>See the table below.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="pr-tag">Audit</span>
+      <h2>Duplicate-image audit, packaged for Mostafa</h2>
+      <p class="sec-sub">Requested by Leo to direct the photography work; published as a public page.</p>
+    </div>
+    <p>Every built page was scanned for the same image file rendering more than once. After excluding intentional repeats (logo marquee loop, carousel thumbnails, video poster fallbacks), <b>72 duplicated images remain across 39 pages</b>. The report leads with a six-batch shot list — sheet metal parts, CNC parts, investment castings, finishing photos, the Seattle facility, and article thumbnails — that would clear most of the table, and links every repeated image and page directly.</p>
+    <p>Live and shareable without a login: <a href="https://leo26850.github.io/redstone-image-audit/">leo26850.github.io/redstone-image-audit</a>. India facility and sand-casting photography were already requested from Mostafa on Slack this morning; the audit rides the same ask.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="pr-tag">Verified</span>
+      <h2>End-of-day Plane reconciliation</h2>
+    </div>
+    <p>Every item actioned today was re-checked against Plane at end of day: <b>all 97 expected Done items are Done, all 28 cancellations stuck, zero mismatches</b>. The 41 items still open all have a stated reason and owner — they're listed below.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="pr-tag">Next</span>
+      <h2>What's still open, and what it's waiting on</h2>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <tr><th>Item</th><th>Waiting on</th><th>Status</th></tr>
+        <tr><td>RED-205 · 206 · 267 · 284 · 416</td><td>Real facility and part photography from Mostafa (India hero, sand-cast and investment-cast parts). Requested on Slack today.</td><td><span class="pill wait">Assets</span></td></tr>
+        <tr><td>RED-286 · 291 · 278 · 187 · 264</td><td>Eric's calls: a truncated comment needing clarification, a hover-accordion design question, whether to drop a spec rail, thin single-item sections, and the Industrial Equipment imagery pass.</td><td><span class="pill wait">Decision</span></td></tr>
+        <tr><td>RED-202 · 211 · 214 · 217 · 268</td><td>Five tariff/materials articles from the agency sheet that were never built — content-build tasks.</td><td><span class="pill wait">Build</span></td></tr>
+        <tr><td>RED-313 · 156 · 152–157</td><td>Rehan's JSON schema work (PR #134 open, go-live URL question) and Kas/Jack-owned tasks.</td><td><span class="pill wait">Others</span></td></tr>
+      </table>
+    </div>
+    <div class="note">
+      <b>Deploy incident</b>
+      Vercel's production queue stalled for ~55 minutes after the PR #139 merge (previews built fine; production deploys sat "deploying"). It cleared on its own and every change was then verified against production. If it recurs, only the kasandz Vercel team can inspect the queue — worth Kas checking the project's build settings.
+    </div>
+  </section>
+
+  <footer>
+    <div>Prepared July 8, 2026 · redstone-web · PRs #136–#139 on <code>master</code></div>
+    <div>All changes verified against production after deploy</div>
+  </footer>
+</div>
+
+</body>
+</html>
