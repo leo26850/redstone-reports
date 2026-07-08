@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Redstone — Imagery Replacement Snapshot · July 8–9, 2026</title>
+<style>
+  :root {
+    --bg:#faf9f7; --ink:#1c1a18; --faint:#8a837c; --line:#e5e0da;
+    --red:#b3272d; --red-soft:#f7e9e9; --card:#ffffff; --chip:#f1ede8;
+    --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#171512; --ink:#ece7e0; --faint:#948d84; --line:#2e2a25;
+      --red:#e0555b; --red-soft:#3a2224; --card:#201d19; --chip:#2a2621; }
+  }
+  :root[data-theme="dark"] { --bg:#171512; --ink:#ece7e0; --faint:#948d84; --line:#2e2a25;
+    --red:#e0555b; --red-soft:#3a2224; --card:#201d19; --chip:#2a2621; }
+  :root[data-theme="light"] { --bg:#faf9f7; --ink:#1c1a18; --faint:#8a837c; --line:#e5e0da;
+    --red:#b3272d; --red-soft:#f7e9e9; --card:#ffffff; --chip:#f1ede8; }
+  * { box-sizing:border-box; margin:0; }
+  body { background:var(--bg); color:var(--ink); font:15px/1.6 var(--sans); }
+  .wrap { max-width:1060px; margin:0 auto; padding:48px 24px 72px; }
+  .kicker { font:600 11px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--red); margin-bottom:14px; }
+  h1 { font-size:clamp(24px,4vw,34px); line-height:1.2; letter-spacing:-.01em; text-wrap:balance; max-width:22ch; }
+  .lede { color:var(--faint); max-width:64ch; margin-top:14px; }
+  .lede a, td a, .pgs a { color:inherit; text-decoration-color:var(--line); text-underline-offset:3px; }
+  .stats { display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
+  .stat { background:var(--card); border:1px solid var(--line); padding:12px 18px; min-width:140px; }
+  .stat b { display:block; font:600 22px/1.2 var(--mono); color:var(--red); }
+  .stat span { font-size:12.5px; color:var(--faint); }
+  h2 { font-size:19px; margin:56px 0 6px; letter-spacing:-.01em; }
+  .sub { color:var(--faint); font-size:13.5px; max-width:72ch; margin-bottom:18px; }
+  .prtag { font:600 11px/1 var(--mono); color:var(--faint); letter-spacing:.06em; margin-left:8px; }
+  /* swap rows: old -> new */
+  .swap { display:grid; grid-template-columns:1fr 34px 1fr; gap:10px; align-items:center;
+    background:var(--card); border:1px solid var(--line); padding:14px; margin-bottom:12px; }
+  .swap figure { min-width:0; }
+  .swap img { width:100%; aspect-ratio:16/10; object-fit:cover; display:block; background:var(--chip); }
+  .swap figcaption { font:11.5px/1.45 var(--mono); color:var(--faint); margin-top:7px; overflow-wrap:break-word; }
+  .swap figcaption b { color:var(--ink); font-weight:600; display:block; font-family:var(--sans); font-size:12.5px; }
+  .arrow { text-align:center; color:var(--red); font-size:18px; }
+  .old img { filter:grayscale(.35); opacity:.85; }
+  .oldtag, .newtag { display:inline-block; font:600 10px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; padding:3px 7px; margin-bottom:6px; }
+  .oldtag { background:var(--chip); color:var(--faint); }
+  .newtag { background:var(--red-soft); color:var(--red); }
+  .pgs { font-size:12.5px; color:var(--faint); margin:2px 0 0; }
+  /* new-set grids */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-bottom:10px; }
+  .grid figure { background:var(--card); border:1px solid var(--line); padding:8px; }
+  .grid img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; background:var(--chip); }
+  .grid figcaption { font:10.5px/1.4 var(--mono); color:var(--faint); margin-top:6px; }
+  .retired { border-left:3px solid var(--line); padding:10px 16px; margin:14px 0 0; font-size:13px; color:var(--faint); }
+  .retired b { color:var(--ink); font:600 11px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; display:block; margin-bottom:5px; }
+  .retired code { font:11.5px var(--mono); background:var(--chip); padding:1px 5px; }
+  .note { border-left:3px solid var(--red); background:var(--red-soft); padding:12px 16px; font-size:13.5px; margin:16px 0 0; }
+  .tablewrap { overflow-x:auto; border:1px solid var(--line); background:var(--card); }
+  table { border-collapse:collapse; width:100%; font-size:13.5px; }
+  th { text-align:left; font:600 11px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--faint);
+    padding:10px 14px; border-bottom:1px solid var(--line); }
+  td { padding:9px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tr:last-child td { border-bottom:0; }
+  td:first-child { font-family:var(--mono); font-size:12px; white-space:nowrap; }
+  footer { margin-top:64px; padding-top:14px; border-top:1px solid var(--line); color:var(--faint); font-size:12.5px; }
+  @media (max-width:640px){ .swap { grid-template-columns:1fr; } .arrow { transform:rotate(90deg); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Redstone Manufacturing · Imagery Replacement Snapshot</div>
+  <h1>Every image replaced on July 8–9, and the pages it changed</h1>
+  <p class="lede">Mostafa's four service photo sets (die casting, sand casting, investment casting, CNC) plus the geo-gallery corrections from Eric's review, applied across seven pull requests and verified live on <a href="https://redstone-web-eight.vercel.app">redstone-web-eight.vercel.app</a>. Old images are shown dimmed; every thumbnail loads from the live site.</p>
+  <div class="stats">
+    <div class="stat"><b>4</b><span>service photo sets applied</span></div>
+    <div class="stat"><b>46</b><span>new images shipped</span></div>
+    <div class="stat"><b>45</b><span>pages changed</span></div>
+    <div class="stat"><b>#140–#150</b><span>pull requests, all merged &amp; live</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>Service page heroes<span class="prtag">PR #146 · #147</span></h2>
+  <p class="sub">The raw Figma hero exports bake a dark left panel into the image, but the hero template's poster pane shows the image's left-of-center region — so the full exports rendered near-black. The fix crops each export down to its subject region before use.</p>
+
+  <div class="swap">
+    <figure class="old"><span class="oldtag">Before</span>
+      <img loading="lazy" src="https://redstone-web-eight.vercel.app/img/stock/cnc-machining.jpg" alt="Old CNC hero — stock turn-mill photo">
+      <figcaption><b>Stock turn-mill photo</b>/img/stock/cnc-machining.jpg</figcaption></figure>
+    <div class="arrow">→</div>
+    <figure><span class="newtag">Now live</span>
+      <img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/hero-lathe-crop.jpg" alt="New CNC hero — lathe turning a shaft under red light">
+      <figcaption><b>Mostafa's lathe hero, crop-fit to the poster pane</b>/img/cnc-v2/hero-lathe-crop.jpg</figcaption></figure>
+  </div>
+  <p class="pgs">Hero on all 15 CNC pages: <a href="https://redstone-web-eight.vercel.app/services/cnc-machining/">/services/cnc-machining/</a>, the Mexico + China variants, and all 11 sub-pages (5-axis, 3-axis, 4-axis, turn-mill, lathe, precision, aluminum, steel, firearms, medical, U.S. facility).</p>
+
+  <div class="swap" style="margin-top:14px">
+    <figure class="old"><span class="oldtag">Before</span>
+      <img loading="lazy" src="https://redstone-web-eight.vercel.app/img/stock/machined-parts.jpg" alt="Old sand casting hero — generic machined parts stock photo">
+      <figcaption><b>Generic machined-parts stock photo</b>/img/stock/machined-parts.jpg</figcaption></figure>
+    <div class="arrow">→</div>
+    <figure><span class="newtag">Now live</span>
+      <img loading="lazy" src="https://redstone-web-eight.vercel.app/img/sand-casting-v2/hero-cast-housings-crop.jpg" alt="New sand casting hero — cast housings, red graded">
+      <figcaption><b>Mostafa's cast-housings hero, crop-fit</b>/img/sand-casting-v2/hero-cast-housings-crop.jpg</figcaption></figure>
+  </div>
+  <p class="pgs">Hero on all 6 sand-casting pages: <a href="https://redstone-web-eight.vercel.app/services/sand-casting/">/services/sand-casting/</a>, Mexico / China / India variants, and the cast-iron sub-page.</p>
+
+  <div class="note">Die-casting and investment-casting heroes deliberately kept their existing finished-part stills (water-pump housing / cylinder head): the die-casting hero export rendered broken live and was reverted per Leo; the investment export was skipped under the same rule. Both raw exports can be salvaged with the same crop treatment on request.</div>
+</section>
+
+<section>
+  <h2>Geo galleries: the "machining centers" that were actually CMMs<span class="prtag">PR #148</span></h2>
+  <p class="sub">Eric's 7-3-26 review, Image Corrections #31: both "CNC machine" photos in the shared library show coordinate-measuring machines — inspection equipment, not machining. One is literally branded "Cordax Discovery Series CMM." Both were sitting in the China, India, and Mexico facility galleries captioned as machining centers.</p>
+
+  <div class="swap">
+    <figure class="old"><span class="oldtag">Before — a CMM</span>
+      <img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-sd/horizontal-mc.jpg" alt="Cordax Discovery Series CMM, previously captioned as a horizontal machining center">
+      <figcaption><b>Cordax Discovery CMM, captioned "horizontal machining centers"</b>/img/die-casting-sd/horizontal-mc.jpg</figcaption></figure>
+    <div class="arrow">→</div>
+    <figure><span class="newtag">Now live</span>
+      <img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-sd/cnc-machining-1.jpg" alt="Redstone team at a Haas VMC on the production floor">
+      <figcaption><b>Haas VMC floor photo (China, Mexico) · CNC turning center (India)</b>/img/die-casting-sd/cnc-machining-1.jpg · cta-machining.jpg</figcaption></figure>
+  </div>
+
+  <div class="swap">
+    <figure class="old"><span class="oldtag">Before — a touch probe</span>
+      <img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-sd/5-axis-vmc.jpg" alt="Touch-probe inspection of a ring part, previously captioned as a 5-axis VMC">
+      <figcaption><b>Probe inspecting a ring, captioned "5-axis VMC"</b>/img/die-casting-sd/5-axis-vmc.jpg</figcaption></figure>
+    <div class="arrow">→</div>
+    <figure><span class="newtag">Now live</span>
+      <img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/five-axis-milling-still.jpg" alt="Five-axis CNC milling machine cutting">
+      <figcaption><b>Five-axis milling in progress (China, India)</b>/img/cnc-v2/five-axis-milling-still.jpg</figcaption></figure>
+  </div>
+  <p class="pgs">Pages: <a href="https://redstone-web-eight.vercel.app/geo/china/">/geo/china/</a> (both tiles), <a href="https://redstone-web-eight.vercel.app/geo/india/">/geo/india/</a> (both tiles), <a href="https://redstone-web-eight.vercel.app/geo/mexico/">/geo/mexico/</a> (one tile). Captions corrected to match; zero references to either CMM photo remain in the codebase.</p>
+</section>
+
+<section>
+  <h2>CNC machining — full family set<span class="prtag">PR #147 · #150</span></h2>
+  <p class="sub">Before: the CNC hub cycled 6 phone-quality photos across 11 route cards, the gallery, and the application cards — every image appeared twice or more. Now every one of the 11 capability routes and 4 applications has its own dedicated 1254px+ shot, and every CNC page is duplicate-free.</p>
+  <div class="grid">
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/route-5-axis.jpg" alt="5-axis machined component"><figcaption>route · 5-axis</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/route-3-axis.jpg" alt="3-axis milled block"><figcaption>route · 3-axis</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/route-4-axis.jpg" alt="4-axis rotary trunnion fixture"><figcaption>route · 4-axis</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/route-turn-mill.jpg" alt="Turn-mill shaft and housing"><figcaption>route · turn-mill</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/route-lathe.jpg" alt="CNC turned stepped shaft"><figcaption>route · turning &amp; lathe</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/route-precision.jpg" alt="Precision machined component"><figcaption>route · precision</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/route-aluminum.jpg" alt="Machined aluminum part"><figcaption>route · aluminum</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/route-steel.jpg" alt="Machined steel part"><figcaption>route · steel</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/route-firearms.jpg" alt="Machined firearms component"><figcaption>route · firearms</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/route-medical.jpg" alt="Medical CNC machined parts"><figcaption>route · medical</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/route-us-facility.jpg" alt="U.S. machining facility part"><figcaption>route · U.S. facility</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/part-rotary-table.jpg" alt="Machined rotary table assembly"><figcaption>gallery · rotary table</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/app-automotive.jpg" alt="Automotive Tier 1 machined housing"><figcaption>application · automotive</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/app-industrial.jpg" alt="Industrial machined manifold"><figcaption>application · industrial</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/app-electronics.jpg" alt="Machined electronics enclosure and heat sink"><figcaption>application · electronics</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/cnc-v2/app-energy.jpg" alt="Energy system machined hardware"><figcaption>application · energy</figcaption></figure>
+  </div>
+  <div class="retired"><b>Retired from rotation</b>
+    The 6 phone-quality shots that used to cycle everywhere — <code>cylinder-housings-endcaps</code>, <code>flange-housing</code>, <code>motor-end-bell</code>, <code>plates-indexing-fixture</code>, <code>pump-housing-cover</code>, <code>sample-parts-display</code> — plus the already-excluded <code>gear-shaft</code> and <code>manifold-plates</code>.</div>
+  <p class="pgs" style="margin-top:10px">Pages: CNC hub, Mexico / China / India variants, and all 11 sub-pages. On <a href="https://redstone-web-eight.vercel.app/services/cnc-machining-india/">cnc-machining-india</a> the India-only "Legacy and replacement parts" card is pinned to the turned-shaft shot.</p>
+</section>
+
+<section>
+  <h2>Die casting — routes, applications &amp; gallery<span class="prtag">PR #140 · #141 · #150</span></h2>
+  <p class="sub">Six capability route cards, four application cards, three gallery parts, and three related-capability process shots. The blue-background product-listing photos were retired from the shared pool at the same time.</p>
+  <div class="grid">
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/route-high-pressure.png" alt="High-pressure die casting route card"><figcaption>route · high-pressure</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/route-low-pressure.png" alt="Low-pressure die casting route card"><figcaption>route · low-pressure</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/route-hot-chamber.png" alt="Hot-chamber die casting route card"><figcaption>route · hot-chamber</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/route-cold-chamber.png" alt="Cold-chamber die casting route card"><figcaption>route · cold-chamber</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/route-aluminum.png" alt="Aluminum die casting route card"><figcaption>route · aluminum</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/route-zinc.png" alt="Zinc die casting route card"><figcaption>route · zinc</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/app-automotive-components.png" alt="Automotive die-cast components"><figcaption>application · automotive</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/app-electronics-enclosures.png" alt="Die-cast electronics enclosure"><figcaption>application · electronics</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/app-industrial-equipment.png" alt="Industrial die-cast equipment part"><figcaption>application · industrial</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/app-consumer-hardware.png" alt="Consumer die-cast hardware"><figcaption>application · consumer</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/parts-production-bench.png" alt="Die-cast parts on production bench"><figcaption>gallery · production bench</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/hardware-component-floor.png" alt="Die-cast hardware component on factory floor"><figcaption>gallery · factory floor</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/engine-block-closeup.png" alt="Machined engine block close-up"><figcaption>gallery · engine block</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/related-cnc-milling.png" alt="CNC milling related-capability card"><figcaption>related card · CNC</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/related-sheet-metal-cutting.png" alt="Sheet metal cutting related-capability card"><figcaption>related card · sheet metal</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/die-casting-v2/related-mim-tooling.png" alt="MIM tooling related-capability card"><figcaption>related card · MIM</figcaption></figure>
+  </div>
+  <div class="retired"><b>Retired from rotation</b>
+    Blue-background listing photos <code>aluminum-flanged-parts</code> and <code>aluminum-ring-flange</code> (style retired site-wide per Leo); the molten investment-casting shot in the delivered zip was never used — molten imagery is banned.</div>
+  <p class="pgs" style="margin-top:10px">Pages: <a href="https://redstone-web-eight.vercel.app/services/die-casting/">die-casting hub</a>, Mexico / China / India variants, high-pressure-die-casting, and 7 sub-pages.</p>
+</section>
+
+<section>
+  <h2>Sand casting — applications<span class="prtag">PR #143</span></h2>
+  <p class="sub">The family previously had no usable photo pool at all — its own shots were low-res phone photos or banned molten pours, so it borrowed from other families. These four plus the hero give it a real pool.</p>
+  <div class="grid">
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/sand-casting-v2/app-automotive.jpg" alt="Sand-cast automotive pump housing"><figcaption>application · automotive</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/sand-casting-v2/app-heavy-machinery.jpg" alt="Heavy machinery sand casting"><figcaption>application · heavy machinery</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/sand-casting-v2/app-oil-gas.jpg" alt="Oil and gas sand-cast hardware"><figcaption>application · oil &amp; gas</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/sand-casting-v2/app-construction.jpg" alt="Construction sand casting"><figcaption>application · construction</figcaption></figure>
+  </div>
+  <div class="retired"><b>Retired from rotation</b>
+    Low-res phone shots <code>gearbox-cover</code>, <code>motor-housing-fins</code>, <code>truck-cam-lock</code> and the parts composite; all "pour"/foundry molten shots remain banned and unused.</div>
+  <p class="pgs" style="margin-top:10px">Pages: <a href="https://redstone-web-eight.vercel.app/services/sand-casting/">sand-casting hub</a>, Mexico / China / India variants, cast-iron sub-page.</p>
+</section>
+
+<section>
+  <h2>Investment casting — routes &amp; applications<span class="prtag">PR #145</span></h2>
+  <p class="sub">Ends the family's longest-standing problem: it borrowed a die-casting photo (valve-bodies) that repeated on all six of its pages, in both the gallery and the industries strip.</p>
+  <div class="grid">
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/investment-casting-v2/route-stainless-steel.jpg" alt="Stainless steel investment casting"><figcaption>route · stainless</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/investment-casting-v2/route-aluminum.jpg" alt="Aluminum investment casting"><figcaption>route · aluminum</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/investment-casting-v2/route-carbon-steel.jpg" alt="Carbon steel investment casting"><figcaption>route · carbon steel</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/investment-casting-v2/app-automotive.jpg" alt="Automotive investment-cast components"><figcaption>application · automotive</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/investment-casting-v2/app-industrial-machinery.jpg" alt="Industrial machinery investment castings"><figcaption>application · industrial</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/investment-casting-v2/app-medical-dental.jpg" alt="Medical and dental investment castings"><figcaption>application · medical &amp; dental</figcaption></figure>
+    <figure><img loading="lazy" src="https://redstone-web-eight.vercel.app/img/investment-casting-v2/app-hand-tools.jpg" alt="Hand tool and lock investment castings"><figcaption>application · hand tools</figcaption></figure>
+  </div>
+  <div class="retired"><b>Retired from rotation</b>
+    The borrowed die-casting <code>valve-bodies</code> repeat (was on all 6 pages), <code>pump-impeller</code>, and the other borrowed CNC/MIM stand-ins.</div>
+  <p class="pgs" style="margin-top:10px">Pages: <a href="https://redstone-web-eight.vercel.app/services/investment-casting/">investment-casting hub</a>, Mexico / China / India variants, and the stainless / aluminum / carbon-steel sub-pages.</p>
+</section>
+
+<section>
+  <h2>All 45 pages changed</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>Family / area</th><th>Pages</th><th>What changed</th></tr>
+    <tr><td>cnc-machining ×15</td><td><a href="https://redstone-web-eight.vercel.app/services/cnc-machining/">hub</a> · <a href="https://redstone-web-eight.vercel.app/services/cnc-machining-mexico/">mexico</a> · <a href="https://redstone-web-eight.vercel.app/services/cnc-machining-china/">china</a> · <a href="https://redstone-web-eight.vercel.app/services/cnc-machining-india/">india</a> · 11 sub-pages</td><td>New hero, 11 route cards, 4 application cards, gallery pool — duplicate-free</td></tr>
+    <tr><td>die-casting ×12</td><td><a href="https://redstone-web-eight.vercel.app/services/die-casting/">hub</a> · <a href="https://redstone-web-eight.vercel.app/services/die-casting-mexico/">mexico</a> · <a href="https://redstone-web-eight.vercel.app/services/die-casting-china/">china</a> · <a href="https://redstone-web-eight.vercel.app/services/die-casting-india/">india</a> · <a href="https://redstone-web-eight.vercel.app/services/high-pressure-die-casting/">high-pressure</a> · 7 sub-pages</td><td>6 route cards, 4 application cards, 3 gallery parts, 3 related cards — duplicate-free</td></tr>
+    <tr><td>sand-casting ×6</td><td><a href="https://redstone-web-eight.vercel.app/services/sand-casting/">hub</a> · <a href="https://redstone-web-eight.vercel.app/services/sand-casting-mexico/">mexico</a> · <a href="https://redstone-web-eight.vercel.app/services/sand-casting-china/">china</a> · <a href="https://redstone-web-eight.vercel.app/services/sand-casting-india/">india</a> · cast-iron</td><td>New crop-fit hero, 4 application cards, first real family photo pool</td></tr>
+    <tr><td>investment-casting ×7</td><td><a href="https://redstone-web-eight.vercel.app/services/investment-casting/">hub</a> · <a href="https://redstone-web-eight.vercel.app/services/investment-casting-mexico/">mexico</a> · <a href="https://redstone-web-eight.vercel.app/services/investment-casting-china/">china</a> · <a href="https://redstone-web-eight.vercel.app/services/investment-casting-india/">india</a> · 3 sub-pages</td><td>3 route cards, 4 application cards, valve-bodies repeat eliminated</td></tr>
+    <tr><td>geo ×3</td><td><a href="https://redstone-web-eight.vercel.app/geo/china/">china</a> · <a href="https://redstone-web-eight.vercel.app/geo/india/">india</a> · <a href="https://redstone-web-eight.vercel.app/geo/mexico/">mexico</a></td><td>CMM photos replaced with real CNC machining shots, captions corrected (Eric #31)</td></tr>
+    <tr><td>aluminum-casting +2</td><td><a href="https://redstone-web-eight.vercel.app/services/aluminum-casting/">hub</a> and variants</td><td>Side effect: blue-background listing photos retired from the shared pool</td></tr>
+  </table>
+  </div>
+  <p class="sub" style="margin-top:14px">Same-page duplicate count across the site: 39 pages / 72 duplicates before the campaign → 21 pages / 41 after (see the <a href="https://leo26850.github.io/redstone-image-audit/">imagery audit</a> for what remains — sheet metal, finishing, US facility, article thumbnails).</p>
+</section>
+
+<footer>
+  Generated 2026-07-09 · PRs #140–#148, #150 on kasandzz/redstone-web, all merged to master and verified on production · Companion pages: <a href="https://leo26850.github.io/redstone-image-audit/">duplicate-image audit</a> · <a href="https://leo26850.github.io/redstone-sitemap/">site map</a>
+</footer>
+
+</div>
+</body>
+</html>
